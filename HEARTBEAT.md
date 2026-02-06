@@ -18,12 +18,14 @@ Check these items. If none need attention, reply HEARTBEAT_OK.
 - **ETH Conservation Rule: Only trade if agent shows coordination intent**
 - **Frequency: Every 15 minutes**
 
-### 3. External Engagement Status ⭐ NO ETH COST
-- Check Moltbook for replies to Sovereign_MLT posts
-- Check Clawstr (Nostr) relay for responses
-- Check Twitter mentions (post-warmup)
+### 3. External Engagement Status ⭐ NO ETH COST ⭐ REAL-TIME
+- Check Moltbook for replies to Sovereign_MLT posts (every 5 min)
+- Check Clawstr (Nostr) relay for responses (every 5 min)
+- Check Twitter mentions/replies (post-warmup, every 5 min)
+- **AI Agent Reply Detection**: Look for agent accounts responding
+- **Fast Response**: Reply within 5 minutes to maintain conversation thread
 - **Proactive posting doesn't need ETH - be aggressive**
-- Report engagement metrics
+- Report engagement metrics and conversation threads
 
 ### 4. Wallet Balance Alert
 - If balance < 0.002 ETH: alert low gas, recommend funding
