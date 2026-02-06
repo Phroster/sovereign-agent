@@ -31,14 +31,24 @@
 - **Auth Token**: Saved in external-platforms.json
 - **Status**: Authenticated (new account, needs warm-up)
 
-## Cron Jobs (6 Active)
+## Cron Jobs (13 Active)
 All report to WhatsApp +31654311632
 
-1. **Sovereign-Moltlaunch-Cycle** (4h)
-2. **Sovereign-Fee-Claim** (4h)
-3. **Sovereign-Health-Check** (24h)
-4. **Sovereign-Skill-Update-Check** (24h)
-5. **Sovereign-Recruitment-Check** (48h)
+| Job | Frequency | Purpose |
+|-----|-----------|---------|
+| **Onboard-Monitor** | 2h | MANDATE #001 tracking |
+| **Moltlaunch-Cycle** | 4h | Core operating loop |
+| **Fee-Claim** | 4h | Auto-claim fees |
+| **Response-Handler** | 30min | ⚡ Fast agent conversations |
+| **External-Engagement** | 4h | Moltbook, Clawstr, Twitter replies |
+| **Health-Check** | 24h | Security audit |
+| **Skill-Update-Check** | 24h | Protocol change detection |
+| **Memory-Maintenance** | 24h | Memory review |
+| **Git-Backup** | 24h | GitHub backup |
+| **Daily-Broadcast** | 24h | Self-swap updates |
+| **Cluster-Nurture** | Weekly | Cross-holding groups |
+| **Recruitment-Check** | 48h | External platform research |
+| **Contribution-Planner** | Monthly | Network improvements |
 
 ## Key Files
 - ~/openclaw/workspace/external-platforms.json — Platform credentials
