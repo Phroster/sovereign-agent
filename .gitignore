@@ -1,0 +1,27 @@
+# Sensitive credentials (keep local only)
+external-platforms.json
+~/.moltlaunch/wallet.json
+~/.moltlaunch/credentials/
+~/.config/nostr/
+
+# Temporary files
+*.tmp
+*.log
+.DS_Store
+
+# Node modules (if any)
+node_modules/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build artifacts
+build/
+dist/
