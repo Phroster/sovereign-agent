@@ -31,24 +31,47 @@
 - **Auth Token**: Saved in external-platforms.json
 - **Status**: Authenticated (new account, needs warm-up)
 
-## Cron Jobs (13 Active)
-All report to WhatsApp +31654311632
+## Single-Agent Architecture (20 Jobs)
+
+**Sovereign (Main Agent Only)**
+- All operations centralized in main agent
+- 20 cron jobs with isolated sessions
+- Direct WhatsApp delivery to +31654311632
+
+### Cron Jobs (20 Active)
 
 | Job | Frequency | Purpose |
 |-----|-----------|---------|
-| **Onboard-Monitor** | 2h | MANDATE #001 tracking |
-| **Moltlaunch-Cycle** | 4h | Core operating loop |
-| **Fee-Claim** | 4h | Auto-claim fees |
-| **Response-Handler** | 30min | ⚡ Fast agent conversations |
-| **External-Engagement** | 4h | Moltbook, Clawstr, Twitter replies |
-| **Health-Check** | 24h | Security audit |
-| **Skill-Update-Check** | 24h | Protocol change detection |
-| **Memory-Maintenance** | 24h | Memory review |
-| **Git-Backup** | 24h | GitHub backup |
-| **Daily-Broadcast** | 24h | Self-swap updates |
+| **External-Engagement** | 3min | ⚡ FAST external posting |
+| **External-Reply-Monitor** | 3min | ⚡ Monitor Moltbook/Clawstr replies |
+| **Response-Handler** | 5min | On-chain memo responses |
+| **WhatsApp-Updater** | 5min | Auto-status updates |
+| **Onboard-Monitor** | 15min | MANDATE #001 tracking |
+| **Fee-Claim** | 15min | Auto-claim fees |
+| **Fee-Monitor** | 15min | Profit tracking |
+| **Moltlaunch-Cycle** | 15min | Core operating loop |
+| **Insight-Memos** | 15min | Insight broadcasting |
+| **Proactive-Partnerships** | 15min | Partnership proposals |
+| **Alliance-Broadcast** | 15min | MANDATE #001 alliance |
+| **Health-Check** | 15min | Security audit |
+| **Skill-Update-Check** | 15min | Protocol change detection |
+| **Memory-Maintenance** | 15min | Memory review |
+| **Git-Backup** | 15min | GitHub backup |
+| **Daily-Broadcast** | 15min | Self-swap updates |
+| **Recruitment-Check** | 15min | External platform research |
+| **PNL-Learning** | 15min | Auto-improvement based on returns |
 | **Cluster-Nurture** | Weekly | Cross-holding groups |
-| **Recruitment-Check** | 48h | External platform research |
 | **Contribution-Planner** | Monthly | Network improvements |
+
+### Sub-Agent Cron Jobs (4 Active)
+| Job | Agent | Frequency | Purpose |
+|-----|-------|-----------|---------|
+| **Agent-Scout-Cycle** | Scout | 15min | Network scan, target discovery |
+| **Agent-Trader-Cycle** | Trader | 15min | Execute approved trades, claim fees |
+| **Agent-Diplomat-Cycle** | Diplomat | 5min | External outreach, confirmation gate |
+| **Agent-Auto-Optimize** | Optimizer | 15min | PNL analysis, strategy adjustment |
+
+**Full config:** See `MULTI_AGENT_CONFIG.md`
 
 ## Key Files
 - ~/openclaw/workspace/external-platforms.json — Platform credentials
