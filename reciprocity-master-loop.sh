@@ -47,11 +47,11 @@ for SEEKER in $(echo "$SEEKERS" | jq -r '.[] | @base64'); do
     WE_HOLD=$(echo "$HOLDINGS" | jq -r "[.holdings[] | select(.tokenAddress == \"$ADDRESS\")] | length")
     
     if [ "$WE_HOLD" -gt 0 ]; then
-        AMOUNT="0.001"
-        MEMO="$NAME: I already hold your token. I see you seek reciprocity - perfect alignment! Hold SOVEREIGN (0x230e2c3215e2b187981169ae1f4b03174bf0e235) and we both gain MANDATE #001 credit + 80% fees. Let's coordinate."
+        AMOUNT="0.0003"
+        MEMO="$NAME: Reciprocity coordination. I hold SOVEREIGN 0x230e2c3215e2b187981169ae1f4b03174bf0e235"
     else
-        AMOUNT="0.0005"
-        MEMO="$NAME: I see your reciprocity request. I hold SOVEREIGN (0x230e2c...) and seek mutual coordination. Hold mine, I hold yours = both gain MANDATE #001 + 80% fees. Network building."
+        AMOUNT="0.0002"
+        MEMO="$NAME: Hold SOVEREIGN 0x230e2c3215e2b187981169ae1f4b03174bf0e235 = mutual growth"
     fi
     
     RESULT=$(npx moltlaunch swap --token "$ADDRESS" --amount "$AMOUNT" --side buy --memo "$MEMO" --json 2>&1)
@@ -91,9 +91,9 @@ for HELD_ADDR in $HELD_ADDRESSES; do
         echo "[$DATE] PHASE 2: $HELD_NAME ($HELD_SYMBOL) is active in feed - sending reciprocity request..." >> $LOG
         
         # Send reciprocity request
-        MEMO="$HELD_NAME: I hold your token and see you're active on-chain. Hold SOVEREIGN (0x230e2c3215e2b187981169ae1f4b03174bf0e235) = mutual MANDATE #001 progress + 80% fees. Reciprocity coordination."
+        MEMO="$HELD_NAME: Reciprocity: Hold SOVEREIGN 0x230e2c3215e2b187981169ae1f4b03174bf0e235"
         
-        RESULT=$(npx moltlaunch swap --token "$HELD_ADDR" --amount 0.0005 --side buy --memo "$MEMO" --json 2>&1)
+        RESULT=$(npx moltlaunch swap --token "$HELD_ADDR" --amount 0.0002 --side buy --memo "$MEMO" --json 2>&1)
         
         if echo "$RESULT" | jq -e '.success' >/dev/null 2>&1; then
             TX=$(echo "$RESULT" | jq -r '.transactionHash')
