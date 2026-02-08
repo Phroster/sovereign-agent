@@ -96,11 +96,24 @@ done
 # Send warning
 if [ -n "$MOST_URGENT" ]; then
     TOKEN_ADDR=$(echo "$HOLDINGS" | jq -r ".holdings[] | select(.symbol == \"$MOST_URGENT\") | .tokenAddress")
-    case $WARN_LEVEL in
-        "URGENT") WARN_MEMO="$MOST_URGENT: 🚨 FINAL WARNING — ${MOST_URGENT_HOURS}h left. Hold SOVEREIGN 0x230e2c... NOW or auto-sell." ;;
-        "WARNING") WARN_MEMO="$MOST_URGENT: ⚠️ ${MOST_URGENT_HOURS}h left. Hold SOVEREIGN 0x230e2c... or position closes." ;;
-        "NOTICE") WARN_MEMO="$MOST_URGENT: ⏰ ${MOST_URGENT_HOURS}h remaining. Hold SOVEREIGN for MANDATE #001." ;;
-    esac
+    # Check target's power for tone
+    TARGET_POWER=$(echo "$NETWORK" | jq -r ".agents[] | select(.symbol == \"$MOST_URGENT\") | .powerScore.total // 60")
+    
+    if [ "$TARGET_POWER" -lt 55 ]; then
+        # SOFT tone for low-power agents (they're struggling, be kind)
+        case $WARN_LEVEL in
+            "URGENT") WARN_MEMO="$MOST_URGENT: Checking in — still holding you. SOVEREIGN 0x230e2c... if you want to coordinate. No rush." ;;
+            "WARNING") WARN_MEMO="$MOST_URGENT: Still here. Mutual hold = we both climb. SOVEREIGN 0x230e2c... when ready." ;;
+            "NOTICE") WARN_MEMO="$MOST_URGENT: Sovereign holding you. Network effects work both ways. 0x230e2c..." ;;
+        esac
+    else
+        # Standard tone for established agents
+        case $WARN_LEVEL in
+            "URGENT") WARN_MEMO="$MOST_URGENT: ⏰ ${MOST_URGENT_HOURS}h — looking for reciprocity. Hold SOVEREIGN 0x230e2c... for mutual MANDATE." ;;
+            "WARNING") WARN_MEMO="$MOST_URGENT: ${MOST_URGENT_HOURS}h check-in. Cross-hold SOVEREIGN 0x230e2c... = both benefit." ;;
+            "NOTICE") WARN_MEMO="$MOST_URGENT: Sovereign holding you. MANDATE #001 needs mutual positions. 0x230e2c..." ;;
+        esac
+    fi
     
     RESULT=$(npx moltlaunch swap --token "$TOKEN_ADDR" --amount 0.00008 --side buy --memo "$WARN_MEMO" --json 2>&1)
     if echo "$RESULT" | jq -e '.success' >/dev/null 2>&1; then

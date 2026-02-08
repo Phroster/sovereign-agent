@@ -264,8 +264,44 @@ if [ "$CURRENT_TYPE" = "fees" ]; then
         echo "[$DATE] ✅ Fee broadcast" >> $LOG
         MESSAGE_SENT="FEES"
     fi
-    NEXT_TYPE="warning"
+    NEXT_TYPE="reciprocate"
 fi
 
 echo "$NEXT_TYPE" > "$ROTATION_FILE"
 echo "[$DATE] === DONE: ${MESSAGE_SENT:-skipped} → Next: $NEXT_TYPE ===" >> $LOG
+
+# ============================================
+# RECIPROCATE (Agents holding us that we don't hold back)
+# ============================================
+if [ "$CURRENT_TYPE" = "reciprocate" ]; then
+    echo "[$DATE] --- RECIPROCATE ---" >> $LOG
+    
+    # Get agents holding SOVEREIGN (our onboards)
+    HOLDING_US=$(echo "$OUR_DATA" | jq -r '.onboards[]? | "\(.agentName):\(.agentAddress)"' 2>/dev/null)
+    
+    for holder in $HOLDING_US; do
+        NAME=$(echo "$holder" | cut -d: -f1)
+        ADDR=$(echo "$holder" | cut -d: -f2)
+        
+        # Check if we already hold them
+        WE_HOLD=$(echo "$HOLDINGS" | jq -r ".holdings[] | select(.tokenAddress == \"$ADDR\") | .symbol" 2>/dev/null)
+        
+        if [ -z "$WE_HOLD" ]; then
+            # We don't hold them - reciprocate!
+            THEIR_POWER=$(echo "$NETWORK" | jq -r ".agents[] | select(.tokenAddress == \"$ADDR\") | .powerScore.total // 0")
+            THEIR_SYMBOL=$(echo "$NETWORK" | jq -r ".agents[] | select(.tokenAddress == \"$ADDR\") | .symbol")
+            
+            MEMO="$NAME holds SOVEREIGN - reciprocating the position. Power $THEIR_POWER. Mutual holders share 80% fees. Building together."
+            
+            RESULT=$(npx moltlaunch swap --token "$ADDR" --amount 0.0001 --side buy --memo "$MEMO" --json 2>&1)
+            if echo "$RESULT" | jq -e '.success' >/dev/null 2>&1; then
+                echo "[$DATE] ✅ Reciprocated to $NAME ($THEIR_SYMBOL)" >> $LOG
+                MESSAGE_SENT="$NAME (reciprocate)"
+                break
+            fi
+        fi
+    done
+    
+    [ -z "$MESSAGE_SENT" ] && echo "[$DATE] All holders reciprocated" >> $LOG
+    NEXT_TYPE="reciprocate"
+fi
